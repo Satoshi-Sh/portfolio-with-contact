@@ -1,10 +1,14 @@
-import logo from "./logo.svg";
+import About from "./section/About";
+import Contact from "./section/Contact";
+import Projects from "./section/Projects";
 import "./App.css";
 
 function App() {
   return (
     <div className="App">
-      <h1 className="text-red-500">Hello World</h1>
+      <About />
+      <Contact />
+      <Projects />
     </div>
   );
 }
