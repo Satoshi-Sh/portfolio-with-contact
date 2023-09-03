@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
+const baseURL = "http://localhost:4000";
 
 // referred https://codesandbox.io/s/contact-us-form-tailwind-css-4fd66?file=/src/App.js:133-6014
 
@@ -6,10 +8,23 @@ const Contact = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log(name, email, message);
+    try {
+      const response = await axios.post(`${baseURL}/send-email`, {
+        name,
+        email,
+        message,
+      });
+      console.log(response.data.message);
+      setSuccessMessage(response.data.message);
+    } catch (error) {
+      console.error("Error sending email", error);
+      setErrorMessage(error.response.data.error);
+    }
   };
 
   return (
@@ -84,6 +99,12 @@ const Contact = () => {
                     value={message}
                   ></textarea>
                 </div>
+              </div>
+              <div className="text-green-400 w-full p-3 text-center">
+                {successMessage}
+              </div>
+              <div className="text-red-400 w-full p-3 text-center">
+                {errorMessage}
               </div>
               <div className="p-2 w-full">
                 <button
