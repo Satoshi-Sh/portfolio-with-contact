@@ -7,7 +7,7 @@ const projects = [
     technologies: ["TypeScript", "React.js", "Express.js", "MongoDB"],
     image: "/images/mastlog.gif",
     description:
-      "This application allows users to create projects and other members take todo tasks. It features real-time updates using websockets to show the status of projects as well as a chat function for communication among team members. This enables seamless collaboration, task assignment, progress tracking, and communication within the application.",
+      "This react application was built to show my archived Mastodon toots data. Users can filter my toots by hashtag,mention, date, and also can search toots by keyword. It keep records of my programming learning journey",
     github: "https://github.com/Satoshi-Sh/mastlog",
     livepage: "https://satoshis-developer.xyz/mastlog/",
   },
