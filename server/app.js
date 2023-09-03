@@ -1,12 +1,24 @@
 const express = require("express");
 const nodemailer = require("nodemailer");
 const cors = require("cors");
+require("dotenv").config();
+
+const myEmail = process.env["EMAIL_ADDRESS"];
+const myPass = process.env["PASSWORD"];
 
 const app = express();
 const port = 4000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+const transporter = nodemailer.createTransport({
+  service: "Gmail",
+  auth: {
+    user: myEmail,
+    pass: myPass,
+  },
+});
 
 const corsOptions = {
   origin: "http://localhost:3000", // Replace with your frontend's URL
@@ -21,7 +33,23 @@ app.get("/", (req, res) => {
 
 app.post("/send-email", async (req, res) => {
   const { name, email, message } = req.body;
-  console.log(name, email, message);
+  const mailOptions = {
+    from: myEmail,
+    to: email,
+    subject: "Message from Contact Form",
+    text: `Thanks for contacting me through my website. I will reach you back soon.\nName: ${name}\nEmail: ${email}\nMessage: ${message}\n\n
+    Satoshi Shirosaka`,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error("Error sending email:", error);
+      res.status(500).json({ error: "Error sending email" });
+    } else {
+      console.log("Email sent successfully:", info.response);
+      res.json({ message: "Email was sent successfully." });
+    }
+  });
 });
 
 app.listen(port, () => {
