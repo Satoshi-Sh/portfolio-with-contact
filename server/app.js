@@ -2,6 +2,7 @@ const express = require("express");
 const nodemailer = require("nodemailer");
 const cors = require("cors");
 require("dotenv").config();
+const { validateContact } = require("./validators/contact.validator");
 
 const myEmail = process.env["EMAIL_ADDRESS"];
 const myPass = process.env["PASSWORD"];
@@ -33,6 +34,14 @@ app.get("/", (req, res) => {
 
 app.post("/send-email", async (req, res) => {
   const { name, email, message } = req.body;
+  const { error } = validateContact({
+    name,
+    email,
+    message,
+  });
+  if (error) {
+    return res.status(400).json({ error: error.details[0].message });
+  }
   const mailOptions = {
     from: myEmail,
     to: email,
@@ -41,9 +50,9 @@ app.post("/send-email", async (req, res) => {
     Satoshi Shirosaka`,
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error("Error sending email:", error);
+  transporter.sendMail(mailOptions, (err, info) => {
+    if (err) {
+      console.error("Error sending email:", err);
       res.status(500).json({ error: "Error sending email" });
     } else {
       console.log("Email sent successfully:", info.response);

@@ -34,9 +34,11 @@ const Contact = () => {
         message,
       });
       console.log(response.data.message);
+      setErrorMessage("");
       setSuccessMessage(response.data.message);
     } catch (error) {
       console.error("Error sending email", error);
+      setSuccessMessage("");
       if (error.response) {
         setErrorMessage(error.response?.data.error);
       } else {
