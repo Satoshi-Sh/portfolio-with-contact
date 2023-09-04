@@ -1,4 +1,5 @@
 import React from "react";
+import profile from "../images/satoshi.webp";
 
 const About = () => {
   return (
@@ -7,11 +8,7 @@ const About = () => {
       className="flex p-24 justify-center pt-15 md:p-24 lg:p-32 gap-5 flex-wrap"
     >
       <div className="min-w-[150px]">
-        <img
-          src="/images/satoshi.webp"
-          alt="My Image"
-          className="rounded-full"
-        />
+        <img src={profile} alt="My Image" className="rounded-full" />
       </div>
       <div>
         <h1 className="text-[3rem] font-thin">
