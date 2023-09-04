@@ -4,6 +4,11 @@ const baseURL = "http://localhost:4000";
 
 // referred https://codesandbox.io/s/contact-us-form-tailwind-css-4fd66?file=/src/App.js:133-6014
 
+function isValidEmail(email) {
+  const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+  return emailRegex.test(email);
+}
+
 const Contact = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -13,6 +18,15 @@ const Contact = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    //validation
+    if ((name == "") | (email == "") | (message == "")) {
+      alert("Any fields cannot be blank");
+      return;
+    }
+    if (!isValidEmail(email)) {
+      alert("Email should be valid");
+      return;
+    }
     try {
       const response = await axios.post(`${baseURL}/send-email`, {
         name,
@@ -23,7 +37,13 @@ const Contact = () => {
       setSuccessMessage(response.data.message);
     } catch (error) {
       console.error("Error sending email", error);
-      setErrorMessage(error.response.data.error);
+      if (error.response) {
+        setErrorMessage(error.response?.data.error);
+      } else {
+        setErrorMessage(
+          "Something wrong on the server. Please try again later."
+        );
+      }
     }
   };
 
